@@ -68,9 +68,9 @@ export default function OnboardingAssess() {
     setSubmitting(true);
     try {
       await api.submitAssessment(token!, {
-        questions: questions.map((q) => q.id),
+        questions: questions.map((q) => q.text),
         answers,
-        assessment_attempts: 1,
+        assessment_attempts: answers.filter(a => a.trim() !== "").length,
         skill_self_score: onboardingData.skill_self_score,
       });
       navigate("/onboarding/done", { replace: true });
