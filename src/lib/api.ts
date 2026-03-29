@@ -1,7 +1,7 @@
 const API_BASE = "http://localhost:8000";
 
 // Demo mode — set to true to bypass the real backend
-const DEMO_MODE = true;
+const DEMO_MODE = false;
 
 const MOCK_USER = {
   id: "demo-user-001",
