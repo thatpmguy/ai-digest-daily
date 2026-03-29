@@ -56,7 +56,7 @@ export const api = {
   verifyOtp: async (email: string, token: string) => {
     if (DEMO_MODE) {
       await delay();
-      return { access_token: "demo-token-xyz", user_id: MOCK_USER.id, is_new_user: false };
+      return { access_token: "demo-token-xyz", user_id: MOCK_USER.id, is_new_user: true };
     }
     return request<{ access_token: string; user_id: string; is_new_user: boolean }>(
       "/auth/verify-otp",
