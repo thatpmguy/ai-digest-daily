@@ -25,8 +25,9 @@ export default function OnboardingAssess() {
     api
       .getAssessmentQuestions(token!)
       .then((data) => {
-        setQuestions(data.questions);
-        setAnswers(new Array(data.questions.length).fill(""));
+        const cleaned = data.questions.map(({ id, text, options }) => ({ id, text, options }));
+        setQuestions(cleaned);
+        setAnswers(new Array(cleaned.length).fill(""));
       })
       .catch(() => {
         toast.error("Failed to load questions");
