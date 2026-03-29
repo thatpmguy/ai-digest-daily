@@ -12,9 +12,9 @@ const MOCK_USER = {
 };
 
 const MOCK_QUESTIONS = [
-  { id: "q1", text: "What is the main advantage of transformer architecture over RNNs?" },
-  { id: "q2", text: "Explain what 'hallucination' means in the context of LLMs." },
-  { id: "q3", text: "What is the difference between fine-tuning and prompt engineering?" },
+  { id: "q1", text: "What is the main advantage of transformer architecture over RNNs?", options: ["Parallel processing of sequences", "Lower memory usage", "Simpler implementation", "Fewer parameters"] },
+  { id: "q2", text: "Explain what 'hallucination' means in the context of LLMs.", options: ["Generating plausible but incorrect information", "Model crashes during inference", "Overfitting on training data", "Producing empty responses"] },
+  { id: "q3", text: "What is the difference between fine-tuning and prompt engineering?", options: ["Fine-tuning modifies model weights; prompt engineering crafts inputs", "They are the same thing", "Prompt engineering is more expensive", "Fine-tuning only works on small models"] },
 ];
 
 function delay(ms = 400) {
@@ -83,7 +83,7 @@ export const api = {
       await delay();
       return { questions: MOCK_QUESTIONS };
     }
-    return request<{ questions: { id: string; text: string }[] }>(
+    return request<{ questions: { id: string; text: string; options: string[] }[] }>(
       "/users/assessment-questions",
       {},
       token
