@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { ProgressBar } from "@/components/ProgressBar";
 import { useAuth } from "@/contexts/AuthContext";
 import { api } from "@/lib/api";
@@ -10,6 +9,7 @@ import { toast } from "sonner";
 interface Question {
   id: string;
   text: string;
+  options: string[];
 }
 
 export default function OnboardingAssess() {
@@ -81,6 +81,14 @@ export default function OnboardingAssess() {
     }
   };
 
+  const selectOption = (option: string) => {
+    setAnswers((a) => {
+      const copy = [...a];
+      copy[currentIdx] = option;
+      return copy;
+    });
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -110,19 +118,22 @@ export default function OnboardingAssess() {
           <p className="font-medium text-foreground mb-4">
             {questions[currentIdx].text}
           </p>
-          <Textarea
-            placeholder="Your answer…"
-            value={answers[currentIdx]}
-            onChange={(e) =>
-              setAnswers((a) => {
-                const copy = [...a];
-                copy[currentIdx] = e.target.value;
-                return copy;
-              })
-            }
-            rows={4}
-            className="rounded-xl"
-          />
+          <div className="flex flex-col gap-2">
+            {questions[currentIdx].options.map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => selectOption(option)}
+                className={`w-full text-left px-4 py-3 rounded-xl border transition-colors text-sm font-medium ${
+                  answers[currentIdx] === option
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background text-foreground border-border hover:border-primary/50"
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="flex gap-3 mt-6">
@@ -132,7 +143,7 @@ export default function OnboardingAssess() {
           <Button
             className="flex-1 rounded-xl"
             onClick={handleNext}
-            disabled={submitting || (!answers[currentIdx].trim() && !isLast)}
+            disabled={submitting || !answers[currentIdx]}
           >
             {submitting ? "Submitting…" : isLast ? "Submit" : "Next"}
           </Button>
